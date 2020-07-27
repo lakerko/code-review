@@ -1,0 +1,54 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title>Prihlásenie</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="loginForm">
+      <mat-form-field appearance="fill" class="full-width-input">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="email"
+          type="email"
+          (keydown.enter)="login()"
+        >
+        <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
+          Prosím zadajte email v správnom tvare
+        </mat-error>
+        <mat-error *ngIf="email.hasError('required')">
+          Email je <strong>povinný</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width-input">
+        <mat-label>Heslo</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          placeholder="Heslo"
+          [type]="isPasswordVisible ? 'text' : 'password'"
+          (keydown.enter)="login()"
+        >
+        <mat-icon
+          *ngIf="password.value"
+          matSuffix
+          matTooltip="Zobraziť heslo"
+          (click)="togglePasswordVisibility()"
+        >
+          {{ isPasswordVisible ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+        <mat-error *ngIf="password.hasError('required')">
+          Heslo je <strong>povinné</strong>
+        </mat-error>
+      </mat-form-field>
+
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="login()">Prihlásiť</button>
+    <span *ngIf="loginError" class="error-message">{{loginError}}</span>
+  </mat-card-actions>
+</mat-card>

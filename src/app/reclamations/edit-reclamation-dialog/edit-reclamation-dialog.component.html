@@ -1,0 +1,120 @@
+<h1 mat-dialog-title>
+  Predpredajná reklamácia
+</h1>
+
+<div mat-dialog-content>
+
+  <form [formGroup]="form">
+
+    <app-input-technicalStuff-form-group formControlName="technicalStuff" [user]="user"></app-input-technicalStuff-form-group>
+
+    <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px" fxFill>
+
+      <mat-form-field
+        appearance="fill"
+        fxFlex
+      >
+        <mat-label>Dátum pridania</mat-label>
+        <input
+          formControlName="dateAdded"
+          matInput
+          type="text"
+          required
+          placeholder="Dátum pridania"
+          autocomplete="off"
+        />
+
+        <mat-hint>V tvare DD.MM.RRRR</mat-hint>
+
+        <mat-error *ngIf="dateAdded.hasError('validateDate')">
+          Prosím zadajte validný dátum v tvare DD.MM.RRRR
+        </mat-error>
+        <mat-error *ngIf="dateAdded.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        fxFlex
+      >
+        <mat-label>Dátum reklamácie</mat-label>
+        <input
+          formControlName="reclamationDate"
+          matInput
+          type="text"
+          required
+          placeholder="Dátum reklamácie"
+          autocomplete="off"
+        />
+
+        <mat-hint>V tvare DD.MM.RRRR</mat-hint>
+
+        <mat-error *ngIf="reclamationDate.hasError('validateDate')">
+          Prosím zadajte validný dátum v tvare DD.MM.RRRR
+        </mat-error>
+        <mat-error *ngIf="reclamationDate.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="!user.isTechnician"
+        appearance="fill"
+        fxFlex
+      >
+        <mat-label>Dátum odoslania na HS</mat-label>
+        <input
+          formControlName="hsDispatchDate"
+          matInput
+          type="text"
+          required
+          placeholder="Dátum odoslania na HS"
+          autocomplete="off"
+        />
+
+        <mat-hint>V tvare DD.MM.RRRR</mat-hint>
+
+        <mat-error *ngIf="hsDispatchDate.hasError('validateDate')">
+          Prosím zadajte validný dátum v tvare DD.MM.RRRR
+        </mat-error>
+        <mat-error *ngIf="hsDispatchDate.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- <mat-form-field *ngIf="!user.isTechnician" appearance="fill" fxFlex>
+        <mat-label>Pridelený technik</mat-label>
+        <mat-select formControlName="assignedTo" required>
+          <mat-option *ngFor="let technician of displayTechnicians" [value]="technician.uid">
+            {{technician.displayName}}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="assignedTo.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field> -->
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Popis závady</mat-label>
+      <textarea
+        formControlName="defect"
+        matInput
+        type="text"
+        required
+        placeholder="Popis závady"
+        autocomplete="off"
+      ></textarea>
+      <mat-error *ngIf="defect.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+
+</div>
+
+<div mat-dialog-actions>
+</div>

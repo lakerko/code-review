@@ -1,0 +1,117 @@
+<h1 mat-dialog-title>
+  Vytvorenie zamestnanca
+</h1>
+
+<div mat-dialog-content>
+
+  <form [formGroup]="form">
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Predajňa</mat-label>
+      <input
+        formControlName="store"
+        matInput
+        type="text"
+        required
+        placeholder="Predajňa"
+        autocomplete="off"
+      >
+
+      <mat-hint>Predajňa, pod ktorú patrí zamestnanec</mat-hint>
+
+      <mat-error *ngIf="name.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Email zamestnanca</mat-label>
+      <input
+        formControlName="email"
+        matInput
+        type="email"
+        required
+        placeholder="Email zamestnanca"
+        autocomplete=""
+      >
+      <mat-hint>Služobný email zamestnanca</mat-hint>
+
+      <mat-error *ngIf="email.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Meno zamestnanca</mat-label>
+      <input
+        formControlName="name"
+        matInput
+        type="text"
+        required
+        placeholder="Meno zamestnanca"
+        autocomplete="off"
+      >
+
+      <mat-hint>Meno zobrazené v aplikácii, krátke, jedinečné</mat-hint>
+
+      <mat-error *ngIf="name.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Rola zamestnanca</mat-label>
+      <mat-select
+        formControlName="role"
+        required
+        placeholder="Rola zamestnanca"
+        autocomplete="off"
+      >
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{role.viewValue}}
+        </mat-option>
+      </mat-select>
+
+      <mat-hint>Rola určuje oprávnenia zamestnanca</mat-hint>
+
+      <mat-error *ngIf="role.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Login zamestnanca</mat-label>
+      <input
+        formControlName="login"
+        matInput
+        type="text"
+        required
+        placeholder="Login zamestnanca"
+        autocomplete="off"
+      >
+
+      <mat-error *ngIf="login.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+
+  </form>
+
+</div>
+
+<div mat-dialog-actions>
+
+  <button
+    mat-button
+    cdkFocusInitial
+    (click)="onNoClick()"
+  >Zrušiť</button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSaveUser()"
+  >Uložiť zamestnanca</button>
+</div>

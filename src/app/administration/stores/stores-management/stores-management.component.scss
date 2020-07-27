@@ -1,0 +1,32 @@
+.store-card {
+  max-width: 700px;
+}
+
+.employees {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  padding: 0 0.5rem;
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.mat-list-item {
+  cursor: pointer;
+}
+
+.selected-store {
+  background-color: #536dfe;
+  color: #000;
+}
+
+.employees-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(200, 200, 200, 0.25);
+  padding: 0 0.5rem;
+}

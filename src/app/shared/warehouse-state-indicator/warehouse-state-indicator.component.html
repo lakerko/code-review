@@ -1,0 +1,29 @@
+<header>
+  <h3>{{displayAll}}</h3>
+  <form *ngIf="!(userService.user$ | async)?.isTechnician" [formGroup]="filterForm">
+    <mat-form-field>
+      <mat-label>Stav u technika</mat-label>
+      <mat-select formControlName="filterByPerson">
+        <mat-option *ngFor="let technician of displayTechnicians" [value]="technician.uid">
+          {{technician.displayName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</header>
+
+<aside
+  class="warehouse-state-displayed"
+  fxLayout="row wrap"
+  fxLayoutGap="8px"
+>
+  <div
+    *ngFor="let type of displayState"
+    class="state-item"
+    [ngClass]="{ 'selected-item': selection.isSelected(type.label) }"
+    (click)="selection.toggle(type.label)"
+  >
+    <!-- <span class="type-state"><strong>{{type.label}}</strong>: {{type.value.all}} ({{type.value.filtered}})</span> -->
+    <span class="type-state"><strong>{{type.label}}</strong>: {{type.filtered}}</span>
+  </div>
+</aside>

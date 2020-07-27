@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Extrahovať technicalStuff z PDF súborov</h2>
+
+<div mat-dialog-content>
+  <app-pdf-to-technicalStuff-creator (pdfExtracted)="onPdfExtracted($event)"></app-pdf-to-technicalStuff-creator>
+</div>
+
+<mat-dialog-actions>
+  <button
+    mat-raised-button
+    (click)="onNoClick()"
+  >Zavrieť</button>
+</mat-dialog-actions>
