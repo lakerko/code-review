@@ -1,0 +1,216 @@
+<h1 mat-dialog-title>
+  technicalStuff
+</h1>
+
+<div mat-dialog-content>
+
+  <form [formGroup]="edittechnicalStuffForm">
+
+    <app-input-technicalStuff-form-group formControlName="technicalStuffPresent" [user]="user"></app-input-technicalStuff-form-group>
+
+    <!-- <div *ngIf="!technicalStuffOriginCorrespondingVisible && !disabletechnicalStuffOriginCorresponding && isEditMode" class="form-button-container">
+      <button
+        mat-raised-button
+        color="accent"
+        class="input-control"
+        (click)="addtechnicalStuffOriginCorresponding()"
+      >
+        Pridať technicalStuff routra
+      </button>
+    </div>
+
+    <app-select-technicalStuff-form-group
+      *ngIf="technicalStuffOriginCorrespondingVisible && !disabletechnicalStuffOriginCorresponding"
+      formControlName="technicalStuffCorresponding"
+      [user]="user"
+    ></app-select-technicalStuff-form-group> -->
+
+    <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px" fxFill>
+
+      <mat-form-field
+        *ngIf="!user.isTechnician"
+        appearance="fill"
+        fxFlex
+      >
+        <mat-label>Dátum pridania</mat-label>
+        <input
+          formControlName="dateAdded"
+          matInput
+          type="text"
+          [required]="hasRequiredValidator('dateAdded')"
+          placeholder="Dátum pridania"
+          autocomplete="off"
+        />
+
+        <mat-hint>V tvare DD.MM.RRRR</mat-hint>
+
+        <mat-error *ngIf="dateAdded.hasError('validateDate')">
+          Prosím zadajte validný dátum v tvare DD.MM.RRRR
+        </mat-error>
+        <mat-error *ngIf="dateAdded.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="user.isTechnician" appearance="fill" fxFlex>
+        <mat-label>Dátum priradenia</mat-label>
+        <input
+          formControlName="assignedAt"
+          matInput
+          type="text"
+          placeholder="Dátum priradenia"
+          autocomplete="off"
+        />
+
+        <mat-hint>V tvare DD.MM.RRRR</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!user.isTechnician" appearance="fill" fxFlex>
+        <mat-label>Pridelený technik</mat-label>
+        <mat-select formControlName="assignedTo" [required]="isEditMode">
+          <mat-option *ngFor="let technician of displayTechnicians" [value]="technician.uid">
+            {{technician.displayName}}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="assignedTo.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div *ngIf="isEditMode" fxLayout="row wrap" fxLayoutGap.gt-sm="16px" fxFill>
+
+      <mat-form-field appearance="fill" fxFlex>
+        <mat-label>Meno zákazníka</mat-label>
+        <input
+          formControlName="customerName"
+          matInput
+          type="text"
+          [required]="hasRequiredValidator('customerName')"
+          placeholder="Meno zákazníka"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="customerName.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" fxFlex>
+        <mat-label>{{dictionary.getDisplayLabel('customerPhone')}}</mat-label>
+        <span matPrefix>+421 &nbsp;</span>
+        <input
+          formControlName="customerPhone"
+          matInput
+          type="tel"
+          [required]="hasRequiredValidator('customerPhone')"
+          placeholder="{{dictionary.getDisplayLabel('customerPhone')}}"
+          autocomplete="off"
+        />
+
+        <mat-hint>V tvare 9xx xxx xxx</mat-hint>
+        <mat-hint align="end">{{customerPhone.value | countChars}} / 9</mat-hint>
+
+        <mat-error *ngIf="customerPhone.hasError('pattern')">
+          Prosím zadajte tel. č. v tvare 9xx xxx xxx
+        </mat-error>
+        <mat-error *ngIf="customerPhone.hasError('required')">
+          Pole je povinné
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <app-input-technicalStuff-form-group
+      *ngIf="isEditMode"
+      formControlName="technicalStuffAnonym"
+      addendum="výmeny"
+      [user]="user"
+    ></app-input-technicalStuff-form-group>
+
+    <!-- <div *ngIf="!technicalStuffAnonymCorrespondingVisible && !disabletechnicalStuffAnonymCorresponding && isEditMode" class="form-button-container">
+      <button
+        mat-raised-button
+        color="accent"
+        class="input-control"
+        (click)="addtechnicalStuffAnonymCorresponding()"
+      >
+        Pridať technicalStuff routra výmeny
+      </button>
+    </div> -->
+
+    <!-- <app-input-technicalStuff-form-group
+      *ngIf="technicalStuffAnonymCorrespondingVisible && !disabletechnicalStuffAnonymCorresponding"
+      formControlName="technicalStuffAnonymCorresponding"
+      addendum="výmeny"
+      [user]="user"
+    ></app-input-technicalStuff-form-group> -->
+
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Poznámka</mat-label>
+      <input
+        formControlName="note"
+        matInput
+        type="text"
+        placeholder="Poznámka"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isDefective" class="visually-as-form-field">{{dictionary.getDisplayLabel('isDefective')}}</mat-checkbox>
+
+  </form>
+
+</div>
+
+<div mat-dialog-actions>
+
+  <button
+    mat-button
+    cdkFocusInitial
+    (click)="onNoClick()"
+  >Zrušiť</button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!edittechnicalStuffForm.dirty"
+    (click)="onSavetechnicalStuff()"
+  >Uložiť</button>
+
+  <button
+    *ngIf="!user.isTechnician"
+    class="position-on-right"
+    mat-button
+    aria-label="Viac moznosti"
+    [matMenuTriggerFor]="actionsMenu"
+  >
+    <mat-icon>more_vert</mat-icon>
+    <span>Viac</span>
+  </button>
+  <mat-menu #actionsMenu="matMenu">
+
+    <button
+      mat-menu-item
+      matTooltip="Kopírovať do clipboardu v email formáte"
+      color="accent"
+      (click)="copyToClipboard()"
+    >
+      <mat-icon>file_copy</mat-icon>
+      <span>Kopírovať v email formáte</span>
+    </button>
+
+    <button
+      *ngIf="isDeletable"
+      mat-menu-item
+      (click)="onDeletetechnicalStuff()"
+    >
+      <mat-icon color="warn">delete</mat-icon>
+      <span>Zmazať</span>
+    </button>
+  </mat-menu>
+
+</div>

@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Nové technicalStuff z .pdf</h2>
+
+<div mat-dialog-content>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()"
+        ></mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)"
+        ></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container *ngFor="let col of columsDefinition" [matColumnDef]="col.value">
+      <th mat-header-cell *matHeaderCellDef> {{col.label}} </th>
+      <td mat-cell *matCellDef="let newtechnicalStuffEntry"> {{newtechnicalStuffEntry[col.value]}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <app-loading-overlay *ngIf="isBatchLoading"></app-loading-overlay>
+</div>
+
+<mat-dialog-actions>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="isBatchLoading || !selectedtechnicalStuffs.length"
+    (click)="batchSavetechnicalStuffs()"
+  >Uložiť vybrané technicalStuff</button>
+
+  <button
+    mat-raised-button
+    color="warn"
+    [disabled]="isBatchLoading"
+    (click)="onNoClick()"
+  >Neuložiť a zavrieť</button>
+</mat-dialog-actions>

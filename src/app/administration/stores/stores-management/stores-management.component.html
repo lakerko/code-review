@@ -1,0 +1,82 @@
+<div fxLayout="row wrap" fxLayoutGap.gt-sm="24px" fxFill>
+  <mat-card class="store-card" fxLayout="column wrap" fxFlex>
+    <mat-card-header>
+      <mat-card-title>{{ formLabel }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Názov Predajne</mat-label>
+          <input
+            formControlName="name"
+            matInput
+            type="text"
+            required
+            placeholder="Názov Predajne"
+            autocomplete="off"
+          >
+        </mat-form-field>
+
+        <aside *ngIf="name.value" class="emplooyes-list">
+
+          <header class="employees-list-header">
+            <h3>Zoznam zamestnancov</h3>
+            <button mat-raised-button (click)="addEmployee()">Pridať zamestnanca</button>
+          </header>
+          <!-- <mat-list *ngIf="selectedStore && selectedStore.employees">
+            <ng-container *ngFor="let employee of selectedStore.employees">
+              <mat-list-item>
+                <mat-icon mat-list-icon>edit</mat-icon>
+                <div mat-line>
+                  {{employee.email}}
+                  <span class="role">( <mat-icon>assignment_ind</mat-icon>{{employee.role}} )</span>
+                </div>
+                <div mat-line>{{employee.name}}</div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </ng-container>
+          </mat-list> -->
+
+        </aside>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="saveStoreHandler()">Uložiť</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card fxLayout="column wrap" fxFlex>
+
+    <mat-card-header>
+      <mat-card-title>Zoznam predajni</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list>
+
+        <mat-list-item (click)="selectStore()">
+          <mat-icon mat-list-icon>add_box</mat-icon>
+          <div mat-line>Vytvorit novu predajnu</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+
+        <ng-container *ngFor="let store of stores">
+          <mat-list-item
+            [class.selected-store]="selectedStore?.id === store.id"
+            (click)="selectStore(store)"
+          >
+            <mat-icon mat-list-icon>store</mat-icon>
+            <div mat-line>{{store.name}}</div>
+            <div mat-line>Počet zamestnancov: {{store.sumEmployees}}</div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
+
+      </mat-list>
+    </mat-card-content>
+
+  </mat-card>
+</div>

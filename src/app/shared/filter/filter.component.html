@@ -1,0 +1,40 @@
+<form
+  fxLayoutAlign="start center"
+  fxLayoutGap="16px"
+  fxFlexOrder.lt-md="1"
+  [ngStyle.lt-md]="{ 'max-width': '100%' }"
+  [formGroup]="form"
+>
+
+  <mat-form-field [ngStyle.lt-md]="{ 'max-width': 'calc(50% - 8px)' }">
+    <mat-label>Filtrovat podla</mat-label>
+    <mat-select formControlName="filterBy">
+      <mat-option>Všetko</mat-option>
+      <mat-option
+        *ngFor="let opt of columDefinitions | keys"
+        [value]="opt.key"
+      >{{opt.value.label}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <ng-container *ngIf="isOfTypeSelect; else isInput">
+    <mat-form-field [ngStyle.lt-md]="{ 'max-width': 'calc(50% - 8px)' }">
+      <mat-label>Zadaj hodnotu</mat-label>
+      <mat-select formControlName="filterSelect">
+        <mat-option value="">Všetky</mat-option>
+        <mat-option
+          *ngFor="let opt of columDefinitions[filterBy.value].options"
+          [value]="opt.value"
+        >{{opt.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+
+  <ng-template #isInput>
+    <mat-form-field [ngStyle.lt-md]="{ 'max-width': 'calc(50% - 8px)' }">
+      <mat-label>Zadaj hodnotu</mat-label>
+      <input formControlName="filterInput"matInput>
+    </mat-form-field>
+  </ng-template>
+
+</form>

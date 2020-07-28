@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>Potvrdte názov otherTechnicalStuff</h1>
+
+<div mat-dialog-content>
+
+  <form [formGroup]="form">
+
+    <p class="warning-message">
+      <mat-icon [inline]="true">warning</mat-icon> Prosím skontrolujte správnosť zadaných údajov (otherTechnicalStuff). Oprava chybného otherTechnicalStuff je náročná operácia, ktorá bude spoplatnená.
+    </p>
+
+    <p>
+      Zadajte otherTechnicalStuff
+      <mat-form-field>
+        <input
+          formControlName="otherTechnicalStuff"
+          matInput
+          type="text"
+          required
+          autocomplete="off"
+          cdkFocusInitial
+          (keydown.enter)="onSave()"
+        />
+
+        <mat-error *ngIf="otherTechnicalStuff.hasError('required')">
+          Pole je povinné
+        </mat-error>
+
+        <mat-error *ngIf="otherTechnicalStuff.hasError('pattern')">
+          Zadané otherTechnicalStuff sa musí zhodovať so otherTechnicalStuffom, ktoré chcete vytvoriť!
+        </mat-error>
+      </mat-form-field>
+    </p>
+
+  </form>
+
+</div>
+
+<div mat-dialog-actions>
+
+  <button
+    mat-button
+    (click)="onNoClick()"
+  >Zrušiť</button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!form.dirty"
+    (click)="onSave()"
+  >Uložiť</button>
+
+</div>

@@ -1,0 +1,193 @@
+<ng-template #sidenavActionsRef>
+
+  <button
+    mat-button
+    matTooltip="Vytvoriť Dontwantie"
+    color="primary"
+    (click)="createDontwant()"
+  >
+    <mat-icon>add_circle_outline</mat-icon>
+    <span class="button-label">Vytvoriť Dontwantie</span>
+  </button>
+
+  <div matTooltip="Hromadne upraviť dátumy odoslania (musí byť vybraná min. 1 položka)">
+    <button
+      color="primary"
+      mat-button
+      [disabled]="!selectedDontwants.length"
+      (click)="massEditDontwant()"
+    >
+      <mat-icon>update</mat-icon>
+      <mat-icon class="secondary">done_all</mat-icon>
+      <span class="button-label">Dátumy odoslania</span>
+    </button>
+  </div>
+
+  <div
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    matTooltip="Hromadne vrátiť z inventúri do neuzavrených (musí byť vybraná min. 1 položka)"
+  >
+    <button
+      color="primary"
+      mat-button
+      [disabled]="!selectedDontwants.length || selectedQuery !== 'inventory'"
+      (click)="massRemoveDispatched()"
+    >
+      <mat-icon>undo</mat-icon>
+      <mat-icon class="secondary">done_all</mat-icon>
+      <span class="button-label">Vrátiť z inventúri</span>
+    </button>
+  </div>
+
+  <div
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    matTooltip="Hromadne zmazať záznamy (musí byť vybraná min. 1 položka)"
+  >
+    <button
+      mat-button
+      color="warn"
+      [disabled]="!selectedDontwants.length"
+      (click)="massDeleteDontwants()"
+    >
+      <mat-icon>delete_sweep</mat-icon>
+      <mat-icon class="secondary">done_all</mat-icon>
+      <span class="button-label">Zmazať záznamy</span>
+    </button>
+  </div>
+
+</ng-template>
+
+<ng-template #sidenavWarehouseRef>
+  <app-warehouse-state-indicator
+    *ngIf="selectedQuery === 'opened'"
+    [data]="dataSource.data"
+    [filteredData]="dataSource.filteredData"
+    (selectChange)="onWhSelectChange($event)"
+  ></app-warehouse-state-indicator>
+</ng-template>
+
+<header
+  fxLayout="row wrap"
+  fxLayoutAlign="space-between end"
+  fxLayoutGap.gt-md="16px"
+>
+
+  <mat-button-toggle-group
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    name="activeDontwantsQuery"
+    aria-label="Active O Query"
+    fxFlexOrder.lt-md="2"
+    (change)="onSelectFilter($event)"
+  >
+    <mat-button-toggle [checked]="selectedQuery === 'opened'" value="opened">
+      <mat-icon>lock_open</mat-icon>
+      Neuzavrené
+    </mat-button-toggle>
+    <mat-button-toggle [checked]="selectedQuery === 'inventory'" value="inventory">
+      <mat-icon>list_alt</mat-icon>
+      Invetúra
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <app-filter
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    [columDefinitions]="columDefinitions"
+    (filterChange)="onFilterChange($event)"
+  ></app-filter>
+
+</header>
+
+<main class="table-container">
+
+  <table mat-table
+    matSort
+    class="mat-elevation-z8 main-table"
+    [dataSource]="dataSource"
+    (matSortChange)="onSortData($event)"
+  >
+
+    <ng-container matColumnDef="actions" [sticky]="true">
+      <th mat-header-cell *matHeaderCellDef>
+
+        <mat-icon
+          *ngIf="isSelectionDisabled"
+          class="table-header-info"
+          matTooltip="Položky nie je možné označiť, pretože sú označené položky v present alebo reklamácii"
+        >info</mat-icon>
+
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [disabled]="isSelectionDisabled"
+          [aria-label]="checkboxLabel()"
+        ></mat-checkbox>
+
+      </th>
+
+      <td mat-cell *matCellDef="let row">
+
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          [disabled]="isSelectionDisabled"
+          [aria-label]="checkboxLabel(row)"
+        ></mat-checkbox>
+
+        <button mat-mini-fab class="table-open-dialog-button" (click)="editDontwantRow(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dátum vytvorenia Dontwantia </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.createdAt | firestoredate}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="technicalStuff">
+      <th mat-header-cell *matHeaderCellDef> technicalStuff </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.technicalStuff}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Typ </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Meno </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.customerName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="customerPhone">
+      <th mat-header-cell *matHeaderCellDef> Tel. č. </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.customerPhone}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="hsDispatchDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dátum odoslania </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.hsDispatchDate | firestoredate}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="assignedTo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Technik </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.assignedTo?.displayName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="note">
+      <th mat-header-cell *matHeaderCellDef> Poznámka </th>
+      <td mat-cell *matCellDef="let dontwantEntry"> {{dontwantEntry.note}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      [ngClass]="{ 'not-eligible-for-dispatch': dontwantIdsNotEligibleForDispatch[row.id]}"
+    ></tr>
+  </table>
+
+  <app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+</main>

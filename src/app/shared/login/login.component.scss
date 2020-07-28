@@ -1,0 +1,16 @@
+:host {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin: 2em 0;
+}
+
+.login-card {
+  width: 300px;
+  margin-left: -64px; // because of the sidenav width
+}
+
+.error-message {
+  margin: 0 1em;
+  color: #f44336;
+}

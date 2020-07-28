@@ -1,0 +1,53 @@
+<ng-container [formGroup]="technicalStuffForm">
+
+  <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px" fxFill>
+    <mat-form-field appearance="fill" color="accent" fxFlex>
+      <mat-label>{{dictionary.getDisplayLabel('technicalStuffCorresponding')}} {{addendum}}</mat-label>
+      <mat-select
+        formControlName="technicalStuff"
+        [disableOptionCentering]="true"
+      >
+        <mat-option
+          *ngFor="let technicalStuffOption of correspondingtechnicalStuffDisplayOptions"
+          [value]="technicalStuffOption"
+        >
+          {{technicalStuffOption}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Typ {{addendum}}</mat-label>
+      <mat-select
+        required
+        formControlName="type"
+        [disableOptionCentering]="true"
+      >
+        <mat-option *ngFor="let type of filteredTypesOptions" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>otherTechnicalStuff {{addendum}}</mat-label>
+      <input
+        matInput
+        required
+        type="text"
+        formControlName="otherTechnicalStuff"
+        autocomplete="off"
+        [matAutocomplete]="autotechnicalStuff"
+      >
+      <mat-icon
+        matSuffix
+      >arrow_drop_down</mat-icon>
+      <mat-autocomplete #autotechnicalStuff="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let otherTechnicalStuff of filteredotherTechnicalStuffOptions" [value]="otherTechnicalStuff.value">
+          {{otherTechnicalStuff.displayName}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+</ng-container>
