@@ -1,0 +1,429 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+/* For use in src/lib/core/theming/_palette.scss */
+$md-salala: (
+    50 : #e8f0f8,
+    100 : #c5daee,
+    200 : #9ec2e3,
+    300 : #77aad7,
+    400 : #5a97cf,
+    500 : #3d85c6,
+    600 : #377dc0,
+    700 : #2f72b9,
+    800 : #2768b1,
+    900 : #1a55a4,
+    A100 : #dae9ff,
+    A200 : #a7caff,
+    A400 : #74abff,
+    A700 : #5b9cff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$salala-primary: mat-palette($md-salala, A700, A100, A400);
+$salala-accent: mat-palette($mat-indigo, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$salala-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$salala-theme: mat-dark-theme($salala-primary, $salala-accent, $salala-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($salala-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+app-stores-management {
+
+  .mat-grid-tile {
+
+    .mat-figure {
+      align-items: initial;
+    }
+
+    a,
+    .mat-card {
+      flex: 1;
+    }
+
+    a {
+      text-decoration: none;
+      margin: 1rem;
+    }
+  }
+}
+
+.max-width-inputs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+
+  mat-form-field {
+    flex: 1;
+
+    &:not(:last-child) {
+      margin-right: 0.5em;
+    }
+  }
+
+  .input-control {
+     // to be vertically centered with the input
+    margin-top: 4px;
+    margin-bottom: 25.5px;
+  }
+}
+
+mat-form-field.full-width-input {
+  width: 100%;
+}
+
+mat-form-field.half-width-input {
+  width: 50%;
+}
+
+mat-form-field.medium-string-input {
+  width: 200px;
+}
+
+.mat-form-field {
+
+  .mat-form-field-subscript-wrapper {
+    margin-top: 0.25em;
+  }
+
+  .mat-form-field-prefix {
+    opacity: 0.3;
+    transition: opacity 200ms ease-in;
+  }
+
+  &.mat-focused {
+
+    .mat-form-field-prefix {
+      opacity: 1;
+      transition: opacity 200ms ease-in;
+    }
+  }
+}
+
+.visually-as-form-field {
+  display: inline-flex;
+  align-items: center;
+  height: 63.5px;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  padding-left: 16px;
+}
+
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type {
+  padding-right: 16px;
+}
+
+.mat-header-cell {
+  background-color: #353535;
+}
+
+.mat-header-row th.mat-header-cell,
+.mat-row .mat-cell {
+  padding: 0 6px;
+}
+
+.mat-sort-header-button {
+  text-decoration: underline;
+}
+
+.mat-row {
+  border: none;
+
+  .mat-cell {
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-bottom-color: hsla(0,0%,100%,.12);
+    background: #424242;
+  }
+}
+
+.mat-row:hover .mat-cell {
+  cursor: pointer;
+  background-color: #5e5e5e;
+}
+
+.mat-row.not-eligible-for-dispatch {
+  background-color: rgba(255, 0, 0, 0.25);
+}
+
+.mat-column-actions {
+  min-width: 80px;
+  max-width: 90px;
+}
+
+.mat-column-select {
+  min-width: 60px;
+  max-width: 60px;
+}
+
+.mat-column-hsDispatchDate,
+.mat-column-createdAt,
+.mat-column-dateAdded {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.7rem;
+}
+
+.mat-column-sp {
+  min-width: 70px;
+  max-width: 70px;
+}
+
+.mat-column-assignedTo,
+.mat-column-createdBy {
+  min-width: 100px;
+  max-width: 200px;
+}
+
+.mat-column-type,
+.mat-column-typeAnonym {
+  min-width: 90px;
+  max-width: 120px;
+}
+
+.mat-column-customerName {
+  min-width: 150px;
+}
+
+.mat-column-customerPhone {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.mat-column-note {
+  min-width: 140px;
+}
+
+.mat-column-technicalStuff,
+.mat-column-technicalStuffAnonym,
+.mat-column-technicalStuff2 {
+  min-width: 100px;
+  max-width: 250px;
+}
+
+.mat-column-label {
+  min-width: 300px;
+}
+
+.mat-mini-fab.table-open-dialog-button {
+  margin-left: 1rem;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+
+  & > *:not(:last-child) {
+    margin-right: 1em;
+  }
+}
+
+.position-on-right,
+.mat-button.position-on-right,
+.mat-menu-trigger.position-on-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.mat-dialog-actions {
+  position: relative;
+
+  .position-on-right {
+    top: 17px;
+  }
+}
+
+.mat-icon.icon-size-small {
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+}
+
+.mat-dialog-content,
+.mat-dialog-title {
+  position: relative;
+}
+
+ngx-dropzone input[type="file"]:focus,
+ngx-dropzone input:focus + ngx-dropzone-label,
+ngx-dropzone-label:focus {
+  outline: none !important;
+}
+
+.mat-tab-label-content {
+
+  .mat-icon {
+    margin-right: 0.5em;
+  }
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 110.5px;
+  max-width: 100%;
+  flex-wrap: wrap;
+
+  & > *:not(:last-child) {
+   margin-right: 1rem;
+  }
+
+}
+
+.form-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 89px;
+}
+
+
+.mat-table.main-table {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+}
+
+.table-data-controls {
+  justify-content: space-between;
+
+  .mat-raised-button.fit-in-space {
+    margin-bottom: 12px;
+  }
+}
+
+.left-side,
+.right-side {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 50px;
+
+  & > *:not(:last-child) {
+    margin-right: 1em;
+  }
+}
+
+.table-data-controls,
+.filter {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+
+  & > *:not(:last-child) {
+    margin-right: 1em;
+  }
+}
+
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group.mat-button-toggle-group-appearance-standard {
+  border-radius: 16px 16px 0 0;
+}
+
+.mat-button-toggle {
+  width: 150px;
+
+  &.mat-button-toggle-checked {
+    background-color: #536dfe;
+  }
+}
+
+.mat-tooltip {
+  font-size: 0.8rem;
+}
+
+.slide-toggle-with-icon .mat-slide-toggle-content {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+.dialog-form-errors {
+  padding: 0 8px;
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.cdk-overlay-pane {
+  max-width: 90vw !important;
+}
+
+*[hidden] {
+  display: none !important;
+}
+
+.table-header-info {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.mat-tab-header {
+  background-color: rgba(0, 0, 0, 0.125);
+}
+
+.mat-tab-body-wrapper {
+  padding-top: 1em;
+}
+
+@media screen and (max-width: 959px) {
+  .mat-dialog-container[role="dialog"] {
+    padding: 24px 8px;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 0 4px;
+  }
+}

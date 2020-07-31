@@ -1,0 +1,45 @@
+<ng-container [formGroup]="technicalStuffForm">
+
+  <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px" fxFill>
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>technicalStuff {{addendum}}</mat-label>
+      <input
+        formControlName="technicalStuff"
+        matInput
+        type="text"
+        [required]="hasRequiredValidator(technicalStuff)"
+        placeholder="technicalStuff"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="technicalStuff.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>otherTechnicalStuff {{addendum}}</mat-label>
+      <input
+        formControlName="otherTechnicalStuff"
+        matInput
+        type="text"
+        [required]="hasRequiredValidator(otherTechnicalStuff)"
+        autocomplete="off"
+        [matAutocomplete]="autotechnicalStuff"
+      />
+      <mat-icon
+        matSuffix
+      >arrow_drop_down</mat-icon>
+      <mat-autocomplete #autotechnicalStuff="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let otherTechnicalStuff of filteredotherTechnicalStuffOptions" [value]="otherTechnicalStuff.value">
+          {{otherTechnicalStuff.displayName}}
+        </mat-option>
+      </mat-autocomplete>
+
+      <mat-error *ngIf="otherTechnicalStuff.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+</ng-container>

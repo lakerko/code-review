@@ -1,0 +1,152 @@
+<ng-template #sidenavActionsRef>
+
+  <button
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    mat-button
+    matTooltip="Vytvoriť technicalStuff"
+    color="primary"
+    (click)="createtechnicalStuff()"
+  >
+    <mat-icon>add_circle_outline</mat-icon>
+    <span class="button-label">Vytvoriť technicalStuff</span>
+  </button>
+
+  <button
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    mat-button
+    matTooltip="Vytvoriť technicalStuff z PDF"
+    color="primary"
+    (click)="openPdfExtractor()"
+  >
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span class="button-label">Vytvoriť technicalStuff z PDF</span>
+  </button>
+
+  <div
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    matTooltip="Hromadne upraviť technikov (musí byť vybraná min. 1 položka)"
+  >
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!selectedtechnicalStuffs.length"
+      (click)="massEdittechnicalStuffs()"
+    >
+      <mat-icon>people_alt</mat-icon>
+      <mat-icon class="secondary">done_all</mat-icon>
+      <span class="button-label">Upraviť technikov</span>
+    </button>
+  </div>
+
+  <div
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    matTooltip="Hromadne zmazať záznamy (musí byť vybraná min. 1 položka)"
+  >
+    <button
+      mat-button
+      color="warn"
+      [disabled]="!selectedtechnicalStuffs.length"
+      (click)="massDeletetechnicalStuffs()"
+    >
+      <mat-icon>delete_sweep</mat-icon>
+      <mat-icon class="secondary">done_all</mat-icon>
+      <span class="button-label">Zmazať záznamy</span>
+    </button>
+  </div>
+
+</ng-template>
+
+<ng-template #sidenavWarehouseRef>
+  <app-warehouse-state-indicator
+    [data]="dataSource.data"
+    [filteredData]="dataSource.filteredData"
+    (selectChange)="onWhSelectChange($event)"
+  ></app-warehouse-state-indicator>
+</ng-template>
+
+<header
+  fxLayout="row wrap"
+  fxLayoutAlign="flex-end end"
+  fxLayoutGap.gt-md="16px"
+>
+
+  <app-filter
+    *ngIf="!(userService.user$ | async)?.isTechnician"
+    [columDefinitions]="columDefinitions"
+    (filterChange)="onFilterChange($event)"
+  ></app-filter>
+</header>
+
+<main class="table-container">
+  <table mat-table
+    matSort
+    class="mat-elevation-z8 main-table"
+    [dataSource]="dataSource"
+    (matSortChange)="onSortData($event)"
+  >
+
+    <ng-container matColumnDef="actions" [sticky]="true">
+      <th mat-header-cell *matHeaderCellDef>
+
+        <mat-icon
+          *ngIf="isSelectionDisabled"
+          class="table-header-info"
+          matTooltip="Položky nie je možné označiť, pretože sú označené položky vo výmene, Dontwantí alebo reklamácii"
+        >info</mat-icon>
+
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [disabled]="isSelectionDisabled"
+          [aria-label]="checkboxLabel()"
+        ></mat-checkbox>
+
+      </th>
+
+      <td mat-cell *matCellDef="let row">
+
+        <mat-checkbox
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          [disabled]="isSelectionDisabled"
+          [aria-label]="checkboxLabel(row)"
+        ></mat-checkbox>
+
+        <button mat-mini-fab class="table-open-dialog-button" (click)="edittechnicalStuffRow(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateAdded">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dátum pridania </th>
+      <td mat-cell *matCellDef="let technicalStuffEntry"> {{technicalStuffEntry.dateAdded | firestoredate}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="technicalStuff">
+      <th mat-header-cell *matHeaderCellDef> technicalStuff </th>
+      <td mat-cell *matCellDef="let technicalStuffEntry"> {{technicalStuffEntry.technicalStuff}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Typ </th>
+      <td mat-cell *matCellDef="let technicalStuffEntry"> {{technicalStuffEntry.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdBy">
+      <th mat-header-cell *matHeaderCellDef> Vytvoril </th>
+      <td mat-cell *matCellDef="let technicalStuffEntry"> {{technicalStuffEntry.createdBy?.displayName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="assignedTo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Technik </th>
+      <td mat-cell *matCellDef="let technicalStuffEntry"> {{technicalStuffEntry.assignedTo?.displayName}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+</main>

@@ -1,0 +1,42 @@
+.technicalStuffs-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  min-height: 100px;
+}
+
+.technicalStuff {
+  display: inline-flex;
+  padding: 0.24rem 0.5rem;
+  margin-right: 1em;
+  background-color: rgba(200, 200, 200, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #536dfe; // TODO
+  color: #536dfe; // TODO
+  cursor: pointer;
+
+  &:hover {
+    background-color: #536dfe; // TODO
+    color: #fff;
+  }
+
+  .mat-icon {
+    margin-right: 0.5rem;
+  }
+}

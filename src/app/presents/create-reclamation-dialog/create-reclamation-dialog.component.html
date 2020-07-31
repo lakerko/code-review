@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>
+  Vytvorenie predpredajnej reklamácie
+</h1>
+
+<div mat-dialog-content>
+  <p>Tento hardware ste označili ako závadový. Bude preto presunutý zo Presentu do predpredajnej reklamácie.</p>
+
+  <p>Ak to bol omyl, stačte tlačidlo <strong>Zrušiť</strong> a v pôvodnom dialógu odznačte položku <strong>Predpredajná reklamácia</strong></p>
+
+  <form [formGroup]="form">
+
+    <mat-form-field appearance="fill" class="full-width-input">
+      <mat-label>Popis závady</mat-label>
+      <textarea
+        formControlName="defect"
+        matInput
+        type="text"
+        required
+        placeholder="Popis závady"
+        autocomplete="off"
+      ></textarea>
+      <mat-error *ngIf="defect.hasError('required')">
+        Pole je povinné
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+
+</div>
+
+<div mat-dialog-actions>
+</div>

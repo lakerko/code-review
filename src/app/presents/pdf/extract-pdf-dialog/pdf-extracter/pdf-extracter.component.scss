@@ -1,0 +1,55 @@
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  overflow: auto;
+}
+
+ngx-dropzone {
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  min-height: 300px;
+  min-width: 200px;
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+ngx-dropzone-preview.custom-styles {
+  min-width: 80px !important;
+  max-width: 130px !important;
+  min-height: 80px !important;
+  max-height: 80px !important;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  margin: 0.5em !important;
+  padding: 0 !important;
+  overflow: hidden;
+
+  ngx-dropzone-label {
+    max-width: 100%;
+    padding: 0.25em 0.5em;
+    white-space: wrap;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0;
+  }
+}
+
+ngx-dropzone-remove-badge {
+  opacity: 1;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0;
+
+  & > *:not(:last-child) {
+    margin-right: 1em;
+  }
+}

@@ -1,0 +1,146 @@
+<mat-sidenav-container id="sidenav-container">
+
+  <mat-sidenav
+    #drawer
+    fixedInViewport
+    [hidden]="!(userService.user$ | async)"
+    [ngClass]="{
+      'sidenav': true,
+      'isHandset': (isHandset$ | async),
+      'isBigScreen': !(isHandset$ | async),
+      'expanded': isExpanded
+    }"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) ? false : true"
+  >
+    <mat-toolbar
+      class="left-toolbar"
+      (click)="toggleExpand()"
+    >
+      <img width="64" height="64" src="assets/icons/logo_64.png">
+      <h2>Salala</h2>
+      <mat-icon
+        *ngIf="!(isHandset$ | async)"
+        class="expand-icon"
+        color="primary"
+        [matTooltip]="isExpanded ? 'Zmenšiť bočný panel' : 'Zväčšiť bočný panel'"
+      >double_arrow</mat-icon>
+    </mat-toolbar>
+
+    <mat-nav-list *ngIf="isHandset$ | async">
+
+      <a
+        *ngFor="let route of routes"
+        mat-list-item
+        routerLinkActive="active-link"
+        [routerLink]="[route.path]"
+        (click)="drawer.close()"
+      >
+        <span>{{route.label}}</span>
+      </a>
+
+    </mat-nav-list>
+
+    <div class="sidenav-actions">
+      <mat-divider *ngIf="isHandset$ | async"></mat-divider>
+
+      <div matTooltip="Tlačiť vybrané (musí byť vybraná min. 1 položka)">
+        <button
+          color="primary"
+          mat-button
+          appPrinter
+          appDisableGlobal
+        >
+          <mat-icon>print</mat-icon>
+          <span class="button-label">Tlačiť vybrané</span>
+        </button>
+      </div>
+
+      <div
+        *ngIf="!(userService.user$ | async)?.isTechnician"
+        matTooltip="Hromadne kopírovať do clipboardu (musí byť vybraná min. 1 položka)"
+      >
+        <button
+          color="primary"
+          mat-button
+          appDisableGlobal
+          (click)="copyToClipboard()"
+        >
+          <mat-icon>file_copy</mat-icon>
+          <span class="button-label">Kopírovať</span>
+        </button>
+      </div>
+
+      <mat-divider *ngIf="sidenavService.actionsPortal | async"></mat-divider>
+      <ng-template [cdkPortalOutlet]="sidenavService.actionsPortal | async"></ng-template>
+
+      <mat-divider *ngIf="sidenavService.warehousePortal | async"></mat-divider>
+      <ng-template [cdkPortalOutlet]="sidenavService.warehousePortal | async"></ng-template>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <mat-toolbar [hidden]="!(userService.user$ | async)" class="mat-elevation-z2">
+
+      <button
+        *ngIf="isHandset$ | async"
+        mat-icon-button
+        aria-label="Toggle sidenav"
+        type="button"
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Sidenav toggle icon">menu</mat-icon>
+      </button>
+
+      <nav *ngIf="!(isHandset$ | async)" class="horizontal">
+
+        <a
+          *ngFor="let route of routes"
+          mat-button
+          routerLinkActive="mat-elevation-z12 active-link"
+          [routerLink]="[route.path]"
+        >
+          <span>{{route.label}}</span>
+        </a>
+
+      </nav>
+
+      <div class="user-menu">
+        <button
+          *ngIf="userService.user$ | async"
+          mat-button
+          aria-label="User menu"
+          [matMenuTriggerFor]="menu"
+        >
+          <mat-icon>account_circle</mat-icon>
+          <span>{{(userService.user$ | async)?.displayName}}</span>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button
+            *ngIf="(userService.user$ | async)?.role === 'god'"
+            mat-menu-item
+            (click)="goToAdministration()"
+          >
+            <mat-icon>plumbing</mat-icon>
+            <span>Administrácia</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>accessible_forward</mat-icon>
+            <span>Odhlásiť</span>
+          </button>
+        </mat-menu>
+
+      </div>
+
+    </mat-toolbar>
+
+    <ng-content></ng-content>
+
+  </mat-sidenav-content>
+
+
+</mat-sidenav-container>

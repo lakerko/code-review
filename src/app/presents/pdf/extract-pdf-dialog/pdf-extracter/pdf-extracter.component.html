@@ -1,0 +1,34 @@
+<ngx-dropzone (change)="onSelect($event)" accept="application/pdf">
+
+  <ngx-dropzone-label class="custom-styles">
+    <h3>Klikni na mna a vyber,</h3>
+    <h4>alebo do mna presun PDF</h4>
+  </ngx-dropzone-label>
+
+  <ngx-dropzone-preview
+    *ngFor="let file of files"
+    class="custom-styles"
+    [removable]="true"
+    (removed)="onRemove(file)"
+  >
+    <ngx-dropzone-label>{{ file.name }}</ngx-dropzone-label>
+  </ngx-dropzone-preview>
+
+</ngx-dropzone>
+
+<aside class="controls">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!files.length"
+    (click)="extractDataFromPdfFiles()"
+  >Spracovať pdf</button>
+
+  <button
+    mat-raised-button
+    color="warn"
+    [disabled]="!files.length"
+    (click)="removeAll()"
+  >Vyčistiť</button>
+</aside>
+<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
